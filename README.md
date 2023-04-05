@@ -11,11 +11,11 @@ No final criei minha própria aplicações web.
 
 ### 2  - Banco de dados
 
-Aprendi a criar cadastros de novos usuários e implementar mecanismos de autenticação na sua aplicação.
+Aprendi a trabalhar com Banco de Dados e criar formulários com ferramentas nativas do Django.
 
 ###  3 - Segurança
 
-Aprendi a criar cadastros de novos usuários e implementar mecanismos de autenticação na sua aplicação.
+Aprendi a criar cadastros de novos usuários e implementar mecanismos de autenticação para aplicação.
 
 
 ### 4 - Cloud 
@@ -24,7 +24,7 @@ e Python. Aprendi a criar um sistema de gerenciamento de fotografias (CRUD) e a 
 na S3 da AWS para persistir imagens na nuvem.
 
 
-# Passo a passo para roda aplicação
+# Passo a passo para rodar a aplicação
 
 Foi utilizado o Python 3.10
 
