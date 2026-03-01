@@ -1,30 +1,43 @@
 {% load static %}
-<div class="pagina-inicial">
-    <header class="cabecalho">
-        <img src="{% static 'assets/logo/Logo(2).png' %}" alt="Logo da Alura Space" />
-            {% for message in messages %}
-            <div class="alert alert-primary">
-                <p id="messages">{{message}}</p>
-            </div>
-            {% endfor %}
-        <div class="cabecalho__busca">
-            <div class="busca__fundo">
-                <form action="{% url 'buscar' %}">
-                    <input class="busca__input" type="text" name="buscar" placeholder="O que você procura?">
-                    <button type='submit'>
-                        <img class="busca__icone" src="{% static 'assets/icones/1x/search.png' %}" alt="ícone de search">
-                    </button>
-                </form>
-            </div>
-        </div>
-    </header>
-    <main class="principal">
-        <section class="menu-lateral">
-            <nav class="menu-lateral__navegacao">
-                <a href="{% url 'index' %}"><img src="{% static 'assets/icones/1x/Home - ativo.png' %}"> Home </a>
-                <a href="{% url 'login' %}"><img src="{% static 'assets/icones/1x/Mais vistas - inativo.png' %}"> Login </a>
-                <a href="{% url 'cadastro' %}"><img src="{% static 'assets/icones/1x/Novas - inativo.png' %}"> Cadastro </a>
-                <a href="{% url 'logout' %}"><img src="{% static 'assets/icones/1x/Surpreenda-me - inativo.png' %}"> Logout </a>
-                <a href="{% url 'nova_imagem' %}"><img src="{% static 'assets/icones/1x/new.png' %}"width="32" height="32"> Nova imagem </a>
-            </nav>
-        </section>
+<header class="header">
+    <a class="brand" href="{% url 'index' %}">
+        <img src="{% static 'assets/logo/Logo(2).png' %}" alt="Logo da Alura Space">
+    </a>
+    <form class="search" action="{% url 'buscar' %}" method="get">
+        <input class="search__input" type="text" name="buscar" value="{{ termo_busca|default:'' }}" placeholder="O que voce procura no espaco?">
+        <button class="search__button" type="submit">
+            <img class="search__icon" src="{% static 'assets/icones/1x/search.png' %}" alt="Buscar">
+        </button>
+    </form>
+</header>
+
+<main class="layout">
+    <aside class="sidebar">
+        <nav class="sidebar__nav">
+            <a class="sidebar__link {% if request.path == '/' %}sidebar__link--active{% endif %}" href="{% url 'index' %}">
+                <img src="{% static 'assets/icones/1x/Home - ativo.png' %}" alt="">
+                <span>Home</span>
+            </a>
+            {% if user.is_authenticated %}
+            <a class="sidebar__link {% if request.path == '/nova-imagem' %}sidebar__link--active{% endif %}" href="{% url 'nova_imagem' %}">
+                <img src="{% static 'assets/icones/1x/Novas - ativo.png' %}" alt="">
+                <span>Nova imagem</span>
+            </a>
+            <a class="sidebar__link" href="{% url 'logout' %}">
+                <img src="{% static 'assets/icones/1x/Surpreenda-me - inativo.png' %}" alt="">
+                <span>Sair</span>
+            </a>
+            {% else %}
+            <a class="sidebar__link {% if request.path == '/login' %}sidebar__link--active{% endif %}" href="{% url 'login' %}">
+                <img src="{% static 'assets/icones/1x/Mais vistas - inativo.png' %}" alt="">
+                <span>Login</span>
+            </a>
+            <a class="sidebar__link {% if request.path == '/cadastro' %}sidebar__link--active{% endif %}" href="{% url 'cadastro' %}">
+                <img src="{% static 'assets/icones/1x/Novas - inativo.png' %}" alt="">
+                <span>Cadastro</span>
+            </a>
+            {% endif %}
+        </nav>
+    </aside>
+
+    <section class="content">

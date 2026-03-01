@@ -1,24 +1,27 @@
 {% extends 'shared/base.html' %}
-{% load static %}
-{% block content %}
-            <section class="galeria" style="margin-left: 5em">
-                <form action="{% url 'login' %}" method="POST">
-                    {% csrf_token %}
-                    <div class="row">
-                        {% for field in form.visible_fields %}
-                        <div class="col-12 col-lg-12" style="margin-bottom: 10px;">
-                            <label for="{{ field.id_for_label }}" style="color:#D9D9D9; margin-bottom: 5px;">{{field.label}}</label>
-                            {{ field }}
-                        </div>
-                        {% endfor %}
-                    </div>
-                    <div>
-                        <button type="submit" class="btn btn-success col-12" style="padding: top 5px;">Logar</button>
-                    </div>
-                </form>
-            </section>
-        </main>
-    </div>
-</body>
 
+{% block title %}Login | Alura Space{% endblock %}
+
+{% block content %}
+<section class="auth-page">
+    <div class="auth-copy">
+        <p class="section-heading__eyebrow">Acesso</p>
+        <h1 class="auth-copy__title">Entre para gerenciar sua galeria.</h1>
+        <p class="auth-copy__text">Use seu usuario para pesquisar, cadastrar e editar fotografias do acervo.</p>
+    </div>
+
+    <form class="panel-form panel-form--compact" action="{% url 'login' %}" method="post">
+        {% csrf_token %}
+        {% for field in form.visible_fields %}
+        <div class="form-field">
+            <label class="form-field__label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% for error in field.errors %}
+            <p class="form-field__error">{{ error }}</p>
+            {% endfor %}
+        </div>
+        {% endfor %}
+        <button class="button" type="submit">Entrar</button>
+    </form>
+</section>
 {% endblock %}

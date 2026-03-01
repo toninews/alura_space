@@ -1,7 +1,8 @@
-from django.shortcuts import render,redirect
-from apps.usuarios.forms import LoginForms, CadastroForms
-from django.contrib.auth.models import User
 from django.contrib import auth, messages
+from django.contrib.auth.models import User
+from django.shortcuts import redirect, render
+
+from apps.usuarios.forms import CadastroForms, LoginForms
 
 def login(request):
     form = LoginForms()
@@ -10,21 +11,21 @@ def login(request):
         form = LoginForms(request.POST)
 
         if form.is_valid():
-            nome=form['nome_login'].value()
-            senha=form['senha'].value()
+            nome = form.cleaned_data['nome_login']
+            senha = form.cleaned_data['senha']
 
-        usuario = auth.authenticate(
-            request,
-            username=nome,
-            password=senha,
-        )
-        if usuario is not None:
-            messages.success(request, f'Usuário {nome} logado com sucesso!')
-            auth.login(request, usuario)
-            return redirect('index')
-        else:
-            messages.error(request, 'Erro ao efetuar login')
-            return redirect('login')
+            usuario = auth.authenticate(
+                request,
+                username=nome,
+                password=senha,
+            )
+            if usuario is not None:
+                messages.success(request, f'Usuário {nome} logado com sucesso!')
+                auth.login(request, usuario)
+                return redirect('index')
+
+        messages.error(request, 'Erro ao efetuar login')
+        return redirect('login')
 
     return render(request, 'usuarios/login.html', {'form': form})
 
@@ -35,13 +36,9 @@ def cadastro(request):
         form = CadastroForms(request.POST)
 
         if form.is_valid():
-            if form['senha_1'].value() != form['senha_2'].value():
-                messages.error(request, 'As senhas não são iguais')
-                return redirect('cadastro')
-
-            nome = form['nome_cadastro'].value()
-            email = form['email'].value()
-            senha = form['senha_1'].value()
+            nome = form.cleaned_data['nome_cadastro']
+            email = form.cleaned_data['email']
+            senha = form.cleaned_data['senha_1']
 
             if User.objects.filter(username=nome).exists():
                 messages.error(request, 'Usuário já existente')

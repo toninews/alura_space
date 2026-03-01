@@ -1,9 +1,9 @@
-from django.db import models
-from datetime import datetime
 from django.contrib.auth.models import User
+from django.db import models
+from django.utils import timezone
+
 
 class Fotografia(models.Model):
-
     opcoes_categoria = [
         ('NEBULOSA', 'Nebulosa'),
         ('ESTRELA', 'Estrela'),
@@ -16,7 +16,7 @@ class Fotografia(models.Model):
     descricao = models.TextField(null=False, blank=False)
     foto = models.ImageField(upload_to='fotos/%Y/%m/%d/', blank=True)
     publicada = models.BooleanField(default=True)
-    data_fotografia = models.DateTimeField(default=datetime.now, blank=False)
+    data_fotografia = models.DateTimeField(default=timezone.now, blank=False)
     usuario = models.ForeignKey(
         to=User,
         on_delete=models.SET_NULL,
@@ -27,3 +27,6 @@ class Fotografia(models.Model):
 
     def __str__(self):
         return self.nome
+
+    class Meta:
+        ordering = ['-data_fotografia']

@@ -1,55 +1,66 @@
 {% extends 'shared/base.html' %}
 {% load static %}
+
+{% block title %}Galeria | Alura Space{% endblock %}
+
 {% block content %}
-            <section class="conteudo">
-                <section class="banner">
-                    <img class="banner__imagem" src="{% static 'assets/imagens/Banner(2).png' %}" alt="banner Alura Space">
-                    <h1 class="banner__titulo"> A galeria mais completa de fotos do espaço!</h1>
-                </section>
-                <section class="tags">
-                    <p class="tags__titulo">Busque por tags:</p>
-                    <ul class="tags__lista">
-                        <li class="tags__tag"><a href="{% url 'filtro' 'NEBULOSA' %}" class="btn" style="color: #C9C9C9;">Nebulosa</a></li>
-                        <li class="tags__tag"><a href="{% url 'filtro' 'ESTRELA' %}" class="btn" style="color: #C9C9C9;">Estrela</a></li>
-                        <li class="tags__tag"><a href="{% url 'filtro' 'GALÁXIA' %}" class="btn" style="color: #C9C9C9;">Galáxia</a></li>
-                        <li class="tags__tag"><a href="{% url 'filtro' 'PLANETA' %}" class="btn" style="color: #C9C9C9;">Planeta</a></li>
-                    </ul>
-                </section>
-                <section class="galeria">
-                    <div class="cards">
-                        <h2 class="cards__titulo">Navegue pela galeria</h2>
-                        <ul class="cards__lista">
-                            {% if cards %}
-                            {% for fotografia in cards %}
-                            <li class="card">
-                                <a href="{% url 'imagem' fotografia.id %}">
-                                    {% if fotografia.foto == "" or fotografia.foto == null %}
-                                        <img class="card__imagem" src="{% static 'assets/imagens/galeria/not-found.png'%}" alt="foto">
-                                    {% else %}
-                                        <img class="card__imagem" src="{{ fotografia.foto.url }}" alt="foto">
-                                    {% endif %}
-                                </a>
-                                <span class="card__tag">Estrelas</span>
-                                <div class="card__info">
-                                    <p class="card__titulo">{{ fotografia.nome }}</p>
-                                    <div class="card__texto">
-                                        <p class="card__descricao">{{ fotografia.legenda }}</p>
-                                        <span>
-                                            <img src="{% static 'assets/icones/1x/favorite_outline.png' %}" alt="ícone de coração">
-                                        </span>
-                                    </div>
-                                </div>
-                            </li>
-                            {% endfor %}
-                            {% else %}
-                            <div class="imagem__texto">
-                                <p>Fotografias não encontradas</p>
-                            </div>
-                            {% endif %}
-                        </ul>
-                    </div>
-                </section>
-            </section>
-        </main>
+<section class="hero">
+    <div class="hero__content">
+        <p class="hero__eyebrow">Exploracao visual</p>
+        <h1 class="hero__title">Uma galeria para organizar e publicar fotografias do espaco.</h1>
+        <p class="hero__text">Busque, filtre e mantenha seu acervo em um layout mais limpo e pronto para portfolio.</p>
     </div>
+    <img class="hero__image" src="{% static 'assets/imagens/Banner(2).png' %}" alt="Banner Alura Space">
+</section>
+
+<section class="filters">
+    <p class="filters__title">Categorias</p>
+    <div class="filters__list">
+        <a class="chip {% if categoria_ativa == 'NEBULOSA' %}chip--active{% endif %}" href="{% url 'filtro' 'NEBULOSA' %}">Nebulosa</a>
+        <a class="chip {% if categoria_ativa == 'ESTRELA' %}chip--active{% endif %}" href="{% url 'filtro' 'ESTRELA' %}">Estrela</a>
+        <a class="chip {% if categoria_ativa == 'GALÁXIA' %}chip--active{% endif %}" href="{% url 'filtro' 'GALÁXIA' %}">Galaxia</a>
+        <a class="chip {% if categoria_ativa == 'PLANETA' %}chip--active{% endif %}" href="{% url 'filtro' 'PLANETA' %}">Planeta</a>
+    </div>
+</section>
+
+<section class="section-heading">
+    <div>
+        <p class="section-heading__eyebrow">Acervo</p>
+        {% if termo_busca %}
+        <h2 class="section-heading__title">Resultados para "{{ termo_busca }}"</h2>
+        {% else %}
+        <h2 class="section-heading__title">Navegue pela galeria</h2>
+        {% endif %}
+    </div>
+    <a class="button button--ghost" href="{% url 'nova_imagem' %}">Adicionar imagem</a>
+</section>
+
+{% if cards %}
+<section class="gallery-grid">
+    {% for fotografia in cards %}
+    <article class="card">
+        <a class="card__media" href="{% url 'imagem' fotografia.id %}">
+            {% if fotografia.foto %}
+            <img class="card__image" src="{{ fotografia.foto.url }}" alt="{{ fotografia.nome }}">
+            {% else %}
+            <img class="card__image" src="{% static 'assets/imagens/galeria/not-found.png' %}" alt="{{ fotografia.nome }}">
+            {% endif %}
+        </a>
+        <div class="card__body">
+            <div class="card__meta">
+                <span class="card__tag">{{ fotografia.get_categoria_display }}</span>
+                <span class="card__date">{{ fotografia.data_fotografia|date:'d/m/Y' }}</span>
+            </div>
+            <h3 class="card__title">{{ fotografia.nome }}</h3>
+            <p class="card__description">{{ fotografia.legenda }}</p>
+        </div>
+    </article>
+    {% endfor %}
+</section>
+{% else %}
+<section class="empty-state">
+    <h2 class="empty-state__title">Nenhuma fotografia encontrada</h2>
+    <p class="empty-state__text">Tente outra busca, altere o filtro ou adicione uma nova imagem ao acervo.</p>
+</section>
+{% endif %}
 {% endblock %}
