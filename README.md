@@ -55,7 +55,9 @@ python3 manage.py runserver
 
 ## Demo em video
 
-O projeto inclui um video de demonstracao local em `video-demo/demo.mp4`.
+[![Watch the demo](./setup/static/assets/imagens/Banner(2).png)](./video-demo/demo.mp4)
+
+Clique na imagem acima para abrir o video de demonstracao local em `video-demo/demo.mp4`.
 
 ## Publicacao no GitHub
 
