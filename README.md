@@ -58,12 +58,3 @@ python3 manage.py runserver
 [![Watch the demo](./setup/static/assets/imagens/Banner(2).png)](./video-demo/demo.mp4)
 
 Clique na imagem acima para abrir o video de demonstracao local em `video-demo/demo.mp4`.
-
-## Publicacao no GitHub
-
-Antes de publicar, vale revisar:
-
-- nome do repositorio e descricao
-- screenshots da aplicacao
-- configuracao de producao (`DEBUG=False`, `ALLOWED_HOSTS`, S3 ou outro storage)
-- secrets fora do repositorio
